@@ -160,18 +160,18 @@ jobs:
                 --filters "Name=tag:Name,Values=backend-prod-${CIRCLE_WORKFLOW_ID:0:7}" \
                 --query 'Reservations[*].Instances[*].PublicIpAddress' \
                 --output text)
-            echo "http://$BACKEND_AWS_PUBLIC_IP:3030" >> .circleci/outputs/backend_url.txt
+            echo "http://$BACKEND_AWS_PUBLIC_IP:3030" >> .circleci/ansible/inventory.txt
             echo "[all]" >> .circleci/ansible/inventory.txt
             echo "$BACKEND_AWS_PUBLIC_IP" >> .circleci/ansible/inventory.txt
 
-            cat .circleci/outputs/backend_url.txt
+            cat .circleci/ansible/inventory.txt
 
       - run: yum -y install tar gzip
 
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/outputs/backend_url.txt
+            # - project/.circleci/outputs/backend_url.txt
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
       # - destroy_environment
@@ -414,16 +414,16 @@ workflows:
     jobs:
       - build-frontend
       - build-backend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      - deploy-infrastructure
+          # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           # filters:
           #   branches:
           #     only: [master]
