@@ -16,7 +16,7 @@ commands:
               --stack-name "udapeople-frontend-<< parameters.workflow_id >>"
             aws cloudformation delete-stack \
               --stack-name "udapeople-backend-<< parameters.workflow_id >>"
-            aws s3 rm "s3://udapeople-<< parameters.workflow_id >>" --recursive
+            aws s3 rm "s3://udapeople-prod-<< parameters.workflow_id >>" --recursive
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
@@ -263,7 +263,7 @@ jobs:
             npm install
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
-            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 cp dist s3://udapeople-prod-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       # Here's where you will add some code to rollback on failure
       - destroy-environment
       - revert-migrations
@@ -338,7 +338,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            FRONTEND_URL=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.${AWS_DEFAULT_REGION}.amazonaws.com
+            FRONTEND_URL=http://udapeople-prod-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.${AWS_DEFAULT_REGION}.amazonaws.com
              echo $FRONTEND_URL
              if curl -s $FRONTEND_URL | grep "Welcome"
              then
@@ -408,7 +408,7 @@ jobs:
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${oldWorkflowID}" ]]
             then
               echo "-------------------- Start Cleanup --------------------"
-              aws s3 rm "s3://udapeople-${oldWorkflowID}" --recursive
+              aws s3 rm "s3://udapeople-prod-${oldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${oldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${oldWorkflowID}"
               echo "-------------------- DELETED CONFIRMED --------------------"
