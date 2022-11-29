@@ -271,7 +271,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: python:3.11-rc-alpine
     steps:
       - checkout
       - add_ssh_keys:
