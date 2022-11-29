@@ -288,7 +288,8 @@ jobs:
       - run:
            name: Deploy backend
            command: |
-            apt-get install sed
+            sudo apt-get update
+            sudo apt-get install sed
             sed 's/local/production/g' backend/.env
             cd backend
             npm i
