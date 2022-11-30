@@ -30,7 +30,7 @@ commands:
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESSS variable
             successful=1
-            if(( $successful==1 ));
+            if (( $successful==1 ))
             then
               cd ~/project/backend
               npm install
