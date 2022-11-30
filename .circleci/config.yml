@@ -35,6 +35,7 @@ commands:
               cd backend
               npm install
               npm run migration:revert
+              npm audit fix
               exit 1
             else
               echo "Do nothing"
