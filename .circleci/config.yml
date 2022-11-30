@@ -30,7 +30,7 @@ commands:
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESSS variable
             successful=1
-            if (( $successful==1 ));
+            if [[ $successful=1 ]];
             then
               cd backend
               npm install
@@ -411,8 +411,8 @@ jobs:
             then
               echo "s3://udapeople-${OldWorkflowID}"
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
-              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
-              aws cloudformation delete-stack --stack-name "udapeople-frontend-prod-${OldWorkflowID}"
+              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}" --output text
+              aws cloudformation delete-stack --stack-name "udapeople-frontend-prod-${OldWorkflowID}" --output text
             fi
 workflows:
   default:
