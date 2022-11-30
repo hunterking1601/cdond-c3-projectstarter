@@ -18,7 +18,7 @@ commands:
               --stack-name "udapeople-backend-<< parameters.workflow_id >>"
             aws s3 rm "s3://udapeople-prod-<< parameters.workflow_id >>" --recursive
 
-  revert_migrations:
+  revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
       # Add parameter here
@@ -324,7 +324,7 @@ jobs:
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then
-                return 0
+                return 1
             else
                 return 1
             fi
@@ -402,8 +402,8 @@ cleanup:
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
             then
               echo "Im here"
-              echo "s3://udapeople-${OldWorkflowID}"
-              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+              echo "s3://udapeople-prod-${OldWorkflowID}"
+              aws s3 rm "s3://udapeople-prod-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-prod-${OldWorkflowID}"
             else
