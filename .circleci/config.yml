@@ -34,8 +34,10 @@ commands:
             then
               cd ~/project/backend
               npm install
-              Add revert code here. You can find this in the Getting Started section.
+              npm run migration:revert
               exit 1
+            else
+              echo "Do nothing"
             fi
 
 jobs:
@@ -407,10 +409,10 @@ jobs:
             --no-paginate --output text)
             if [[ "udapeople-${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
             then
-            echo "s3://udapeople-${OldWorkflowID}"
-            aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
-            aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-prod-${OldWorkflowID}"
+              echo "s3://udapeople-${OldWorkflowID}"
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+              aws cloudformation delete-stack --stack-name "udapeople-frontend-prod-${OldWorkflowID}"
             fi
 workflows:
   default:
