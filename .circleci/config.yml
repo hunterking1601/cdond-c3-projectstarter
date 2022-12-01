@@ -19,20 +19,21 @@ commands:
             aws s3 rm "s3://udapeople-prod-<< parameters.workflow_id >>" --recursive
 
   revert-migrations:
-      parameters:
-        workflow_id:
-          type: string
-      steps:
-        - run:
-            name: Reverting migrations
-            when: on_fail
-            command: |
-              SUCCESS=$(curl "https://kvdb.io/LHFkzdfqGQiT5AocazCCLL//migration_<<parameters.workflow_id>>" -H "X-Api-Key: ${THISDB_API_KEY}")
-              if (($SUCCESS == 1)); then
-                cd backend
-                npm install
-                npm run migrations:revert
-              fi
+    parameters:
+      workflow_id:
+        default: "${CIRCLE_WORKFLOW_ID:0:7}"
+        type: string
+    steps:
+      - run:
+          name: Reverting migrations
+          when: on_fail
+          command: |
+            SUCCESS=$(curl "https://kvdb.io/LHFkzdfqGQiT5AocazCCLL//migration_<<parameters.workflow_id>>" -H "X-Api-Key: ${THISDB_API_KEY}")
+            if (($SUCCESS == 1)); then
+              cd backend
+              npm install
+              npm run migrations:revert
+            fi
 jobs:
   build-frontend:
     docker:
